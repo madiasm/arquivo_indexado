@@ -67,7 +67,7 @@ struct indice cliente{
 };
 
 void leituraPaises(int tamanho, struct paises vetPaises[], int &cont){
-    for(int i=0, saida=0 ; saida == 0 && i<tamanho; i++){
+    for(int i=0, saida=1; saida != 0 && i<tamanho; i++){
         cout << "\nPais " << i << endl;
         cout << "\nCodigo: ";
         cin >> vetPaises[i].codigo_pais;
@@ -76,10 +76,59 @@ void leituraPaises(int tamanho, struct paises vetPaises[], int &cont){
             cin >> vetPaises[i].nome;
             cont++;
         } else {
-            saida = 1;
+            saida = 0;
         }
     }
 }
+
+void leituraCidades(int tamanho, struct cidades vetCidades[], int &cont){
+    for(int i=0, saida=1; saida != 0 && i<tamanho; i++){
+        cout << "\nCidade " << i << endl;
+        cout << "\nCodigo: ";
+        cin >> vetCidades[i].codigo_cidade;
+        if(vetCidades[i].codigo_cidade > 0){
+            cout << "Nome: ";
+            cin >> vetCidades[i].nome;
+            cout << "UF: ";
+            cin >> vetCidades[i].uf;
+            cout << "\nCodigo pais: ";
+            cin >> vetCidades[i].codigo_pais;
+            cont++;
+        } else {
+            saida = 0;
+        }
+    }
+}
+
+void incluirGuia(){
+    int confirma;
+    cout << "\nInclusao de guias: " << endl;
+    for(int i=0, saida=1; saida !=0 && cont < tamanho; i++){
+        cout "\nCodigo: ";
+        cin >> vetGuia[i].codigo_guia;
+        if(vetGuia[i].codigo_guia > 0){
+            cout << "Nome: ";
+            cin >> vetGuia[i].nome;
+            cout << "Endereco: ";
+            cin >> vetGuia[i].endereco;
+            cout << "Telefone: ";
+            cin >> vetGuia[i].telefone;
+            cout << "Codigo cidade: ";
+            cin >> vetGuia[i].codigo_cidade;
+            cont++;
+            cout << "Deseja incluir mais algum? " << endl;
+            cin >> confirma;
+            if(confirma == 0){
+                saida = 0;
+            }
+        } else {
+            saida = 0;
+        }
+    }
+}
+
+
+
 
 int main()
 {
