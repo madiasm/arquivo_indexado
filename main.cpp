@@ -100,12 +100,49 @@ void leituraCidades(int tamanho, struct cidades vetCidades[], int &cont){
     }
 }
 
+bool buscaGuia(struct indice_guia guia[], int cont, int buscar){
+    int i = 0, f = cont - 1;
+    int m = (i+f) / 2;
+    for(;f >= i && guia[m].codigo != buscar; m = (i+f) / 2){
+        if(guia[m].codigo > busca){
+            f = m - 1;
+        }   else i = m + 1;
+    }
+    if(guia[m].codigo == buscar){
+            cout << "codigo ja existente, digite outro: ";
+            return true;
+    }else{
+            return false;
+    }
+}
+
+bool buscaGuia_Cidade(struct cidades cidade[], struct paises pais[], int cont, int buscar){
+    int i = 0, f = cont - 1;
+    int m = (i+f) / 2;
+    for(;f >= i && cidade[m].codigo_cidade != buscar; m = (i+f) / 2){
+        if(cidade[m].codigo_cidade > busca){
+            f = m - 1;
+        }   else i = m + 1;
+    }
+    if(cidade[m].codigo_cidade == buscar){
+            cout <<  cidade[m].nome << " - " << cidade[m].uf <<  endl;
+            return true;
+    }else{
+            cout << "codigo nao existente, digite outro: ";
+            return false;
+    }
+}
+
+
 void incluirGuia(){
     int confirma;
     cout << "\nInclusao de guias: " << endl;
     for(int i=0, saida=1; saida !=0 && cont < tamanho; i++){
         cout "\nCodigo: ";
         cin >> vetGuia[i].codigo_guia;
+        while(buscaGuia(indiceGuia, cont, vetGuia[i].codigo_guia) == true){
+            cin >> vetGuia[i].codigo_guia;
+}
         if(vetGuia[i].codigo_guia > 0){
             cout << "Nome: ";
             cin >> vetGuia[i].nome;
@@ -114,7 +151,13 @@ void incluirGuia(){
             cout << "Telefone: ";
             cin >> vetGuia[i].telefone;
             cout << "Codigo cidade: ";
+
             cin >> vetGuia[i].codigo_cidade;
+
+            while(buscaGuia(indiceGuia, cont, vetGuia[i].codigo_guia) == true){
+            cin >> vetGuia[i].codigo_cidade;
+}
+
             cont++;
             cout << "Deseja incluir mais algum? " << endl;
             cin >> confirma;
@@ -126,6 +169,7 @@ void incluirGuia(){
         }
     }
 }
+
 
 
 
