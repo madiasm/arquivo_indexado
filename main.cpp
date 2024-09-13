@@ -113,10 +113,26 @@ void lerCidades(int tamanho, struct cidades vetCidade[], struct indices indice[]
 
 int main()
 {
-    bool menu = true;
+    int menu = 1;
 
-    while(menu==true){
+    while(menu != 0){
+        cout << "\n\t\tDigite a funcao que deseja: " << endl;
+        cout << "[1] Ler Paises" << endl;
+        cout << "[2] Ler Cidades" << endl;
+        cout << "[3] Imprimir Paises" << endl;
+        cout << "[4] Imprimir Cidades" << endl;
 
+
+        cin >> decisao;
+
+        switch(decisao){
+        case 1:
+            lerPaises(tamanhoPais, vetPaises, indicePais);
+        case 2:
+            lerCidades(tamanhoCidade, vetCidade, indiceCidade);
+        case 3:
+
+        }
 
 
 
