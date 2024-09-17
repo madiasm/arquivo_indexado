@@ -15,7 +15,7 @@ struct indices{
 struct cidades{
     int codigo;
     string nome;
-    char uf[2];
+    char uf[3];
     int codigoPais;
 };
 
@@ -67,11 +67,39 @@ void organizaIndice(struct indices indice[], int tamanho){
   }
 }
 
+bool incluirGuiasBuscaCodigo(){
+    int i = 0, f = cont, m = (i+f)/2;
+    for(int i = 0, f = 0, m = (i+f)/2){
+
+    }
+}
+
+void incluirGuias(){
+    cout << "\n\t\tFuncao para incluir na tabela Guias" << endl;
+
+    for(int saida = 1, i = 0; saida != 0, i < tamanho, i++){
+        cout << "\n\tCodigo: ";
+        cin >> vetGuia[i].codigo;
+
+        cout << "\n\tNome: ";
+        cin >> vetGuia[i].nome;
+        cout << "\n\tEndereco: ";
+        cin >> vetGuia[i].endereco;
+        cout << "\n\tTelefone: ";
+        cin >> vetGuia[i].telefone;
+        cout << "Codigo da Cidade: ";
+        cin >> vetGuia[i].codigoCidade;
+
+        cout << "\n\tDeseja continuar inserindo?(1/0): ";
+        cin >> saida;
+    }
+}
+
 //funções ler
 
 void lerPaises(int tamanho, int cont, struct paises vetPaises[], struct indices indice[]){
     cout << "\n\t\tFuncao para leitura de paises" << endl;
-    for(int i = 0, saida = 1; i < tamanho && saida != 0; i++){
+    for(int i = 0, saida = 1; i < tamanho && saida != 0; i++, cont++){
         cout << "\n\tPais " << i << endl;
         cout << "\n\tCodigo: ";
         cin >> vetPaises[i].codigo;
@@ -90,9 +118,9 @@ void lerPaises(int tamanho, int cont, struct paises vetPaises[], struct indices 
     organizaIndice(indice, tamanho);
 }
 
-void lerCidades(int tamanho, int cont,struct cidades vetCidade[], struct indices indice[]){
+void lerCidades(int tamanho, int &cont,struct cidades vetCidade[], struct indices indice[]){
     cout << "\n\t\tFuncao para leitura de Cidades" << endl;
-    for(int i = 0, saida = 1; i < tamanho && saida != 0; i++){
+    for(int i = 0, saida = 1; i < tamanho && saida != 0; i++, cont++){
         cout << "\n\tCidade " << i << endl;
         cout << "Codigo: ";
         cin >> vetCidade[i].codigo;
@@ -117,7 +145,7 @@ void lerCidades(int tamanho, int cont,struct cidades vetCidade[], struct indices
 
 //funções de impressão
 
-void imprimirPaises(int tamanho, int cont, struct indices indice[], struct paises vetPaises[]){
+void imprimirPaises(int tamanho, int &cont, struct indices indice[], struct paises vetPaises[]){
     cout << "\n\t\tFuncao para impressao da lista de Paises" << endl;
 
     for(int i=0; i < cont ; i++){
@@ -150,7 +178,7 @@ int main()
     //inicialização dos vetores
 
     struct paises vetPaises[tamanho] = { {1, "Brasil"}, {2, "Argentina"}, {3, "Chile"}};
-    struct cidades vetCidades[tamanho] = { {1, "Assis", "SP", 1}, {2, "Buenos aires", "A", 2}, {3, "sao paulo", "SP", 1}, {1, "maracai", "S", 3}, {2, "candido mota", "D", 2} };
+    struct cidades vetCidades[tamanho] = { {1, "Assis", "SP", 1}, {2, "Buenos aires", "AA", 2}, {3, "sao paulo", "SP", 1}, {1, "maracai", "SA", 3}, {2, "candido mota", "DA", 2} };
 
 
     //inicialização dos indices
@@ -173,7 +201,8 @@ int main()
         cout << "\t[2] Ler Cidades" << endl;
         cout << "\t[3] Imprimir Paises" << endl;
         cout << "\t[4] Imprimir Cidades" << endl;
-
+        cout << "\t[5] Incluir Guias" << endl;
+        cout << "\t[6] Imprimir Guias" << endl;
 
         cout << "\n";
         cin >> decisao;
@@ -181,12 +210,18 @@ int main()
         switch(decisao){
         case 1:
             lerPaises(tamanho, contPaises, vetPaises, indicePaises);
+            break;
         case 2:
             lerCidades(tamanho, contCidades, vetCidades, indiceCidades);
+            break;
         case 3:
             imprimirPaises(tamanho, contPaises, indicePaises, vetPaises);
+            break;
         case 4:
             imprimirCidades(tamanho, contCidades, indiceCidades, vetCidades);
+            break;
+        case 5:
+            incluirGuias();
         }
 
 
