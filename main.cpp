@@ -67,32 +67,70 @@ void organizaIndice(struct indices indice[], int tamanho){
   }
 }
 
-bool incluirGuiasBuscaCodigo(){
+bool incluirGuiasBuscaCodigo(struct indices indice[], int cont, int busca){
     int i = 0, f = cont, m = (i+f)/2;
-    for(int i = 0, f = 0, m = (i+f)/2){
-
+    for(int saida = 1; saida != 0 && f >= i; m = (i+f)/2){
+        if(indice[m].codigo > busca){
+            f = m - 1;
+        }else{
+            i = m + 1;
+        }
+        if(indice[m].codigo == busca){
+            return true;
+        }else return false;
     }
 }
 
-void incluirGuias(){
+void incluirGuias(int tamanho, struct guias vetGuia[], int &cont, struct indices indice[]){
     cout << "\n\t\tFuncao para incluir na tabela Guias" << endl;
 
-    for(int saida = 1, i = 0; saida != 0, i < tamanho, i++){
+    for(int saida = 1, i = 0; saida != 0, i < tamanho; i++){
         cout << "\n\tCodigo: ";
         cin >> vetGuia[i].codigo;
+        if(incluirGuiasBuscaCodigo(indice, cont, vetGuia[i].codigo) == true){
+            while(incluirGuiasBuscaCodigo(indice, cont, vetGuia[i].codigo) == true){
+            cout << "Digite um outro, esse ja existe: ";
+            cin >> vetGuia[i].codigo;
+            }
+        }else{
+            cout << "\n\tNome: ";
+            cin >> vetGuia[i].nome;
+            cout << "\n\tEndereco: ";
+            cin >> vetGuia[i].endereco;
+            cout << "\n\tTelefone: ";
+            cin >> vetGuia[i].telefone;
+            cout << "Codigo da Cidade: ";
+            cin >> vetGuia[i].codigoCidade;
 
-        cout << "\n\tNome: ";
-        cin >> vetGuia[i].nome;
-        cout << "\n\tEndereco: ";
-        cin >> vetGuia[i].endereco;
-        cout << "\n\tTelefone: ";
-        cin >> vetGuia[i].telefone;
-        cout << "Codigo da Cidade: ";
-        cin >> vetGuia[i].codigoCidade;
+            cout << "\n\tDeseja continuar inserindo?(1/0): ";
+            cin >> saida;
+        }
 
-        cout << "\n\tDeseja continuar inserindo?(1/0): ";
-        cin >> saida;
     }
+
+
+/*
+    cont++;
+    // inclusao do novo registro na area de dados
+    cli[cont].codigo = cod;
+    cout << "Nome: ";
+    cin >> cli[cont].nome;
+    cout << "Endereco: ";
+    cin >> cli[cont].endereco;
+    cout << "Cidade: ";
+    cin >> cli[cont].cidade;
+    cout << "Estado: ";
+    cin >> cli[cont].uf;
+    // inclusao na area de indices
+    int i;
+    for (i = cont - 1; idx[i].codigo > cod; i--){
+        idx[i+1].codigo = idx[i].codigo;
+        idx[i+1].ender = idx[i].ender;
+    }
+    idx[i+1].codigo = cod;
+    idx[i+1].ender = cont;
+    cout << "\n\nInclusao realizada com Sucesso";
+    */
 }
 
 //funções ler
@@ -167,6 +205,19 @@ void imprimirCidades(int tamanho, int cont, struct indices indice[], struct cida
     }
 }
 
+void imprimirGuias(int tamanho, int cont, struct indices indice[], struct guias vetGuias[]){
+    cout << "\n\t\tFuncao para impressao da lista de Guias" << endl;
+
+    for(int i=0; i < cont ; i++){
+        cout << "\n\tGuias " << i << endl;
+        cout << "\tCodigo: " << vetGuias[indice[i].ender].codigo << endl;
+        cout << "\tNome: " << vetGuias[indice[i].ender].nome << endl;
+        cout << "\tEndereco: " << vetGuias[indice[i].ender].endereco << endl;
+        cout << "\tTelefone: " << vetGuias[indice[i].ender].telefone << endl;
+        cout << "\tCodigo da Cidade: " << vetGuias[indice[i].ender].codigoCidade << endl;
+    }
+}
+
 
 int main()
 {
@@ -178,18 +229,20 @@ int main()
     //inicialização dos vetores
 
     struct paises vetPaises[tamanho] = { {1, "Brasil"}, {2, "Argentina"}, {3, "Chile"}};
-    struct cidades vetCidades[tamanho] = { {1, "Assis", "SP", 1}, {2, "Buenos aires", "AA", 2}, {3, "sao paulo", "SP", 1}, {1, "maracai", "SA", 3}, {2, "candido mota", "DA", 2} };
+    struct cidades vetCidades[tamanho] = { {1, "Assis", "SP", 1}, {2, "Buenos aires", "AA", 2}, {3, "sao paulo", "SP", 1}, {4, "maracai", "SA", 3}, {5, "candido mota", "DA", 2} };
+    struct guias vetGuias[tamanho] = { {1, "jorge", "rua tal", "123123", 2}, {2, "cleide", "rua tal", "123123", 2}, {3, "ze", "rua tal", "123123", 2} };;
 
 
     //inicialização dos indices
 
-    struct indices indicePaises[tamanho];
-    struct indices indiceCidades[tamanho];
+    struct indices indicePaises[tamanho] = { {1, 0}, {2, 1}, {3, 2} };
+    struct indices indiceCidades[tamanho] = { {1, 0}, {2, 1}, {3, 2}, {4, 3}, {5, 4} };
+    struct indices indiceGuias[tamanho] = { {1, 0}, {2, 1}, {3, 2} };
 
 
     //inicialização dos contadores
 
-    int contPaises = 3, contCidades = 5;
+    int contPaises = 3, contCidades = 5, contGuias = 3;
 
 
     int menu = 1;
@@ -221,7 +274,10 @@ int main()
             imprimirCidades(tamanho, contCidades, indiceCidades, vetCidades);
             break;
         case 5:
-            incluirGuias();
+            incluirGuias(tamanho, vetGuias, contGuias, indiceGuias);
+            break;
+        case 6:
+            imprimirGuias(tamanho, contGuias, indiceGuias, vetGuias);
         }
 
 
