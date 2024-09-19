@@ -75,10 +75,10 @@ bool incluirGuiasBuscaCodigo(struct indices indice[], int cont, int busca){
         }else{
             i = m + 1;
         }
-        if(indice[m].codigo == busca){
+    }
+    if(indice[m].codigo == busca){
             return true;
         }else return false;
-    }
 }
 
 void incluirGuias(int tamanho, struct guias vetGuia[], int &cont, struct indices indice[]){
