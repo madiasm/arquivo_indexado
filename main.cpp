@@ -84,7 +84,7 @@ bool incluirGuiasBuscaCodigo(struct indices indice[], int cont, int busca){
 void incluirGuias(int tamanho, struct guias vetGuia[], int &cont, struct indices indice[]){
     cout << "\n\t\tFuncao para incluir na tabela Guias" << endl;
 
-    for(int saida = 1, i = 0; saida != 0, i < tamanho; i++){
+    for(int saida = 1, i = 0; saida != 0 && i < tamanho; i++){
         cout << "\n\tCodigo: ";
         cin >> vetGuia[i].codigo;
         if(incluirGuiasBuscaCodigo(indice, cont, vetGuia[i].codigo) == true){
@@ -107,31 +107,6 @@ void incluirGuias(int tamanho, struct guias vetGuia[], int &cont, struct indices
         }
 
     }
-
-
-/*
-    cont++;
-    // inclusao do novo registro na area de dados
-    cli[cont].codigo = cod;
-    cout << "Nome: ";
-    cin >> cli[cont].nome;
-    cout << "Endereco: ";
-    cin >> cli[cont].endereco;
-    cout << "Cidade: ";
-    cin >> cli[cont].cidade;
-    cout << "Estado: ";
-    cin >> cli[cont].uf;
-    // inclusao na area de indices
-    int i;
-    for (i = cont - 1; idx[i].codigo > cod; i--){
-        idx[i+1].codigo = idx[i].codigo;
-        idx[i+1].ender = idx[i].ender;
-    }
-    idx[i+1].codigo = cod;
-    idx[i+1].ender = cont;
-    cout << "\n\nInclusao realizada com Sucesso";
-    */
-}
 
 //funções ler
 
@@ -279,9 +254,6 @@ int main()
         case 6:
             imprimirGuias(tamanho, contGuias, indiceGuias, vetGuias);
         }
-
-
-
 
        cout << "\n\t\tDeseja continuar no programa?(1/0): ";
        cin >> menu;
