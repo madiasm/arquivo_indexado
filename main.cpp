@@ -81,8 +81,8 @@ bool incluirGuiasBuscaCodigo(struct indices indice[], int cont, int busca){
         }else return false;
 }
 
-bool incluirGuiasBuscaCidade(int tamanho, struct cidades vetCidades[], struct vetPaises[], int &contCid, int &contPais){
-    int i = 0, f = cont, m = (i+f)/2;
+void buscaCidadePais(int contPais, struct indices indice[], int busca, struct paises vetPaises[]){
+    int i = 0, f = contPais, m = (i+f)/2;
     for(int saida = 1; saida != 0 && f >= i; m = (i+f)/2){
         if(indice[m].codigo > busca){
             f = m - 1;
@@ -91,34 +91,51 @@ bool incluirGuiasBuscaCidade(int tamanho, struct cidades vetCidades[], struct ve
         }
     }
     if(indice[m].codigo == busca){
+            cout << " - " << vetPaises[indice[m].ender].nome << endl;
+        }
+}
+
+bool incluirGuiasBuscaCidade(int tamanho, struct cidades vetCidades[], struct paises vetPaises[], struct indices indice[], int &contCidade, int &contPaises, int busca, struct indices indicePaises[]){
+    int i = 0, f = contCidade, m = (i+f)/2;
+    for(int saida = 1; saida != 0 && f >= i; m = (i+f)/2){
+        if(indice[m].codigo > busca){
+            f = m - 1;
+        }else{
+            i = m + 1;
+        }
+    }
+    if(indice[m].codigo == busca){
+            cout << "\tCidade: " << vetCidades[indice[m].ender].nome;
+            buscaCidadePais(contPaises, indicePaises, vetCidades[indice[m].ender].codigo, vetPaises);
             return true;
         }else return false;
 }
 
-void incluirGuias(int tamanho, struct guias vetGuia[], int &cont, struct indices indice[]){
+void incluirGuias(int tamanho, struct guias vetGuias[], int &cont, struct indices indiceGuias[], struct cidades vetCidades[], struct paises vetPaises[], struct indices indiceCidade[], int &contCidades,
+                  int &contPaises, struct indices indicePaises[]){
     cout << "\n\t\tFuncao para incluir na tabela Guias" << endl;
 
     for(int saida = 1, i = 0; saida != 0 && i < tamanho; i++){
         cout << "\n\tCodigo: ";
-        cin >> vetGuia[i].codigo;
-        if(incluirGuiasBuscaCodigo(indice, cont, vetGuia[i].codigo) == true){
-            while(incluirGuiasBuscaCodigo(indice, cont, vetGuia[i].codigo) == true){
+        cin >> vetGuias[i].codigo;
+        if(incluirGuiasBuscaCodigo(indiceGuias, cont, vetGuias[i].codigo) == true){
+            while(incluirGuiasBuscaCodigo(indiceGuias, cont, vetGuias[i].codigo) == true){
             cout << "\tDigite um outro, esse ja existe: ";
-            cin >> vetGuia[i].codigo;
+            cin >> vetGuias[i].codigo;
             }
         }
         cout << "\n\tNome: ";
-        cin >> vetGuia[i].nome;
+        cin >> vetGuias[i].nome;
         cout << "\tEndereco: ";
-        cin >> vetGuia[i].endereco;
+        cin >> vetGuias[i].endereco;
         cout << "\tTelefone: ";
-        cin >> vetGuia[i].telefone;
+        cin >> vetGuias[i].telefone;
         cout << "\tCodigo da Cidade: ";
-        cin >> vetGuia[i].codigoCidade;
-        if(incluirGuiasBuscaCidade() == false){
-            while(incluirGuiasBuscaCidade() == false){
+        cin >> vetGuias[i].codigoCidade;
+        if(incluirGuiasBuscaCidade(tamanho, vetCidades, vetPaises, indiceGuias, contCidades, contPaises, vetGuias[i].codigoCidade, indicePaises) == false){
+            while(incluirGuiasBuscaCidade(tamanho, vetCidades, vetPaises, indiceGuias, contCidades, contPaises, vetGuias[i].codigoCidade, indicePaises) == false){
                 cout << "\tDigite um outro, esse ja existe: ";
-                cin >> vetGuia[i].codigoCidade;
+                cin >> vetGuias[i].codigoCidade;
             }
         }
 
@@ -270,13 +287,13 @@ int main()
             imprimirCidades(tamanho, contCidades, indiceCidades, vetCidades);
             break;
         case 5:
-            incluirGuias(tamanho, vetGuias, contGuias, indiceGuias);
+            incluirGuias(tamanho, vetGuias, contGuias, indiceGuias, vetCidades, vetPaises, indiceCidades, contCidades, contPaises, indicePaises);
             break;
         case 6:
             imprimirGuias(tamanho, contGuias, indiceGuias, vetGuias);
         }
 
-       cout << "\n\t\tDeseja continuar no programa?(1/0): ";
+       cout << "\n\tDeseja continuar no programa?(1/0): ";
        cin >> menu;
     }
     return 0;
