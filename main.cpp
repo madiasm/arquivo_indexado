@@ -81,6 +81,20 @@ bool incluirGuiasBuscaCodigo(struct indices indice[], int cont, int busca){
         }else return false;
 }
 
+bool incluirGuiasBuscaCidade(int tamanho, struct cidades vetCidades[], struct vetPaises[], int &contCid, int &contPais){
+    int i = 0, f = cont, m = (i+f)/2;
+    for(int saida = 1; saida != 0 && f >= i; m = (i+f)/2){
+        if(indice[m].codigo > busca){
+            f = m - 1;
+        }else{
+            i = m + 1;
+        }
+    }
+    if(indice[m].codigo == busca){
+            return true;
+        }else return false;
+}
+
 void incluirGuias(int tamanho, struct guias vetGuia[], int &cont, struct indices indice[]){
     cout << "\n\t\tFuncao para incluir na tabela Guias" << endl;
 
@@ -89,23 +103,29 @@ void incluirGuias(int tamanho, struct guias vetGuia[], int &cont, struct indices
         cin >> vetGuia[i].codigo;
         if(incluirGuiasBuscaCodigo(indice, cont, vetGuia[i].codigo) == true){
             while(incluirGuiasBuscaCodigo(indice, cont, vetGuia[i].codigo) == true){
-            cout << "Digite um outro, esse ja existe: ";
+            cout << "\tDigite um outro, esse ja existe: ";
             cin >> vetGuia[i].codigo;
             }
-        }else{
-            cout << "\n\tNome: ";
-            cin >> vetGuia[i].nome;
-            cout << "\n\tEndereco: ";
-            cin >> vetGuia[i].endereco;
-            cout << "\n\tTelefone: ";
-            cin >> vetGuia[i].telefone;
-            cout << "Codigo da Cidade: ";
-            cin >> vetGuia[i].codigoCidade;
-
-            cout << "\n\tDeseja continuar inserindo?(1/0): ";
-            cin >> saida;
+        }
+        cout << "\n\tNome: ";
+        cin >> vetGuia[i].nome;
+        cout << "\tEndereco: ";
+        cin >> vetGuia[i].endereco;
+        cout << "\tTelefone: ";
+        cin >> vetGuia[i].telefone;
+        cout << "\tCodigo da Cidade: ";
+        cin >> vetGuia[i].codigoCidade;
+        if(incluirGuiasBuscaCidade() == false){
+            while(incluirGuiasBuscaCidade() == false){
+                cout << "\tDigite um outro, esse ja existe: ";
+                cin >> vetGuia[i].codigoCidade;
+            }
         }
 
+        cout << "\tDeseja continuar inserindo?(1/0): ";
+        cin >> saida;
+        cont++;
+        }
     }
 
 //funções ler
@@ -131,6 +151,7 @@ void lerPaises(int tamanho, int cont, struct paises vetPaises[], struct indices 
     organizaIndice(indice, tamanho);
 }
 
+
 void lerCidades(int tamanho, int &cont,struct cidades vetCidade[], struct indices indice[]){
     cout << "\n\t\tFuncao para leitura de Cidades" << endl;
     for(int i = 0, saida = 1; i < tamanho && saida != 0; i++, cont++){
@@ -150,7 +171,7 @@ void lerCidades(int tamanho, int &cont,struct cidades vetCidade[], struct indice
         cout << "\tCodigo do pais: ";
         cin >> vetCidade[i].codigoPais;
 
-        cout << "\n\tDeseja continuar?(1/0): ";
+        cout << "\tDeseja continuar?(1/0): ";
         cin >> saida;
     }
     organizaIndice(indice, tamanho);
