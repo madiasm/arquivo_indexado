@@ -105,7 +105,7 @@ bool incluirGuiasBuscaCidade(int tamanho, struct cidades vetCidades[], struct pa
         }
     }
     if(indice[m].codigo == busca){
-            cout << "\tCidade: " << vetCidades[indice[m].ender].nome;
+            cout << "\tCidade: " << vetCidades[indice[m].ender].nome << " - " << vetCidades[indice[m].ender].uf;
             buscaCidadePais(contPaises, indicePaises, vetCidades[indice[m].ender].codigo, vetPaises);
             return true;
         }else return false;
