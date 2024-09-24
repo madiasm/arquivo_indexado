@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -25,6 +26,7 @@ struct guias{
     string endereco;
     string telefone;
     int codigoCidade;
+    int status;
 };
 
 struct clientes{
@@ -32,6 +34,7 @@ struct clientes{
     string nome;
     string endereco;
     int codigoCidade;
+    int status;
 };
 
 
@@ -124,6 +127,8 @@ void incluirGuias(int tamanho, struct guias vetGuias[], int &cont, struct indice
             cin >> vetGuias[i].codigo;
             }
         }
+        indiceGuias[cont].codigo = vetGuias[i].codigo;
+        indiceGuias[cont].ender = i;
         cout << "\n\tNome: ";
         cin >> vetGuias[i].nome;
         cout << "\tEndereco: ";
@@ -179,6 +184,8 @@ void incluirGuias(int tamanho, struct guias vetGuias[], int &cont, struct indice
             cin >> vetClientes[i].codigo;
             }
         }
+        indiceClientes[cont].codigo = vetClientes[i].codigo;
+        indiceClientes[cont].ender = i;
         cout << "\tNome: ";
         cin >> vetClientes[i].nome;
         cout << "\tEndereco: ";
@@ -199,22 +206,83 @@ void incluirGuias(int tamanho, struct guias vetGuias[], int &cont, struct indice
     }
 }
 
-void imprimirClientes(int contClientes, struct clientes vetClientes[], struct cidades vetCidades[], int contCidades, struct paises vetPaises[], int contPaises) {
-    cout << "\n\t\tFuncao para imprimir lista de Clientes" << endl;
 
-    for (int i = 0; i < contClientes; i++) {
-        cout << "\n\tCliente " << i << endl;
-        cout << "\tCodigo: " << vetClientes[i].codigo << endl;
-        cout << "\tNome: " << vetClientes[i].nome << endl;
-        cout << "\tEndereco: " << vetClientes[i].endereco << endl;
-        cout << "\tCodigo da Cidade: " << vetClientes[i].codigoCidade << endl;
+
+
+
+
+
+
+
+
+
+
+
+void excluirClientes (struct indices indice[], struct clientes vetClientes[], int &cont, int cod){
+    int i = 0, f = cont;
+    int m = (i + f) / 2;
+    for (; f >= i && cod != indice[m].codigo; m = (i + f) / 2){
+        if (cod > indice[m].codigo)
+            i = m + 1;
+        else
+            f = m - 1;
     }
+    i = indice[m].ender;
+    if ((cod == indice[m].codigo) && vetClientes[i].status == 0){
+        vetClientes[i].status = 1;
+        cout << "\tCliente excluido com sucesso";
+    }
+    else
+        cout << "\tCliente nao cadastrado";
+}
+
+
+void excluirGuias (struct indices indice[], struct guias vetGuias[], int &cont, int cod){
+    int i = 0, f = cont;
+    int m = (i + f) / 2;
+    for (; f >= i && cod != indice[m].codigo; m = (i + f) / 2){
+        if (cod > indice[m].codigo)
+            i = m + 1;
+        else
+            f = m - 1;
+    }
+    i = indice[m].ender;
+    if ((cod == indice[m].codigo) && vetGuias[i].status == 0){
+        vetGuias[i].status = 1;
+        cout << "\tGuia excluido com sucesso!!";
+    }
+    else
+        cout << "\tGuia nao cadastrado";
 }
 
 
 
 
 
+
+
+
+void incluirVendas() {
+    cout << "\n\t\tFuncao para incluir novas vendas" << endl;
+
+    for (int saida = 1, i = contVendas; saida != 0 && i < tamanho; i++) {
+        cout << "\n\tCodigo da venda: ";
+        cin >> vetVendas[i].codigo;
+        indiceVendas[cont].codigo = vetVendas[i].codigo;
+        indiceVendas[cont].ender = i;
+        cout << "\tCodigo de Cliente: ";
+        cin >> vetVendas[i].codigoCliente;
+        cout << "\tCodigo de Pacote: ";
+        cin >> vetVendas[i].codigoPacote;
+        cout << "\tQuantia de pessoas: ";
+        cin >> vetVendas[i].quantidadePessoas;
+        cout << "\tValor Total: ";
+        cin >> vetVendas[i].valorTotal;
+        cout << "\tDeseja continuar inserindo?(1/0): ";
+        cin >> saida;
+        contClientes++;
+    }
+}
 
 
 
@@ -296,12 +364,28 @@ void imprimirGuias(int tamanho, int cont, struct indices indice[], struct guias 
     cout << "\n\t\tFuncao para impressao da lista de Guias" << endl;
 
     for(int i=0; i < cont ; i++){
-        cout << "\n\tGuias " << i << endl;
-        cout << "\tCodigo: " << vetGuias[indice[i].ender].codigo << endl;
-        cout << "\tNome: " << vetGuias[indice[i].ender].nome << endl;
-        cout << "\tEndereco: " << vetGuias[indice[i].ender].endereco << endl;
-        cout << "\tTelefone: " << vetGuias[indice[i].ender].telefone << endl;
-        cout << "\tCodigo da Cidade: " << vetGuias[indice[i].ender].codigoCidade << endl;
+        if(vetGuias[indice[i].ender].status != 1){
+            cout << "\n\tGuias " << i << endl;
+            cout << "\tCodigo: " << vetGuias[indice[i].ender].codigo << endl;
+            cout << "\tNome: " << vetGuias[indice[i].ender].nome << endl;
+            cout << "\tEndereco: " << vetGuias[indice[i].ender].endereco << endl;
+            cout << "\tTelefone: " << vetGuias[indice[i].ender].telefone << endl;
+            cout << "\tCodigo da Cidade: " << vetGuias[indice[i].ender].codigoCidade << endl;
+        }
+    }
+}
+
+void imprimirClientes(int tamanho, int cont, struct indices indice[], struct clientes vetClientes[]){
+    cout << "\n\t\tFuncao para impressao da lista de Guias" << endl;
+
+    for(int i=0; i < cont ; i++){
+        if(vetClientes[indice[i].ender].status != 1){
+            cout << "\n\tGuias " << i << endl;
+            cout << "\tCodigo: " << vetClientes[indice[i].ender].codigo << endl;
+            cout << "\tNome: " << vetClientes[indice[i].ender].nome << endl;
+            cout << "\tEndereco: " << vetClientes[indice[i].ender].endereco << endl;
+            cout << "\tCodigo da Cidade: " << vetClientes[indice[i].ender].codigoCidade << endl;
+        }
     }
 }
 
@@ -337,19 +421,24 @@ int main()
     int menu = 1;
     int decisao;
 
+    int codigo, continuar = 1;
+
     while(menu != 0){
         cout << "\n\t\tDigite a funcao que deseja: " << endl;
-        cout << "\n\t[1] Ler Paises" << endl;
-        cout << "\t[2] Ler Cidades" << endl;
-        cout << "\t[3] Imprimir Paises" << endl;
-        cout << "\t[4] Imprimir Cidades" << endl;
-        cout << "\t[5] Incluir Guias" << endl;
-        cout << "\t[6] Imprimir Guias" << endl;
-        cout << "\t[7] Incluir Clientes" << endl;
-        cout << "\t[8] Imprimir Clientes" << endl;
+        cout << "\n\t[01] Ler Paises" << endl;
+        cout << "\t[02] Ler Cidades" << endl;
+        cout << "\t[03] Imprimir Paises" << endl;
+        cout << "\t[04] Imprimir Cidades" << endl;
+        cout << "\t[05] Incluir Guias" << endl;
+        cout << "\t[06] Imprimir Guias" << endl;
+        cout << "\t[07] Incluir Clientes" << endl;
+        cout << "\t[08] Imprimir Clientes" << endl;
+        cout << "\t[09] Excluir Clientes" << endl;
+        cout << "\t[10] Excluir Guias" << endl;
 
         cout << "\n";
         cin >> decisao;
+        system("cls");
 
         switch(decisao){
         case 1:
@@ -374,12 +463,35 @@ int main()
             incluirClientes(tamanho, vetClientes, contClientes, vetCidades, contCidades, vetPaises, contPaises, indiceClientes, indicePaises);
             break;
         case 8:
-            imprimirClientes(contClientes, vetClientes, vetCidades, contCidades, vetPaises, contPaises);
+            imprimirClientes(tamanho, contClientes, indiceClientes, vetClientes);
             break;
+        case 9:
+            while(continuar > 0){
+                cout << "\n\tQual cliente desseja excluir? ";
+                cin >> codigo;
+                excluirClientes(indiceClientes, vetClientes, contClientes, codigo);
+                cout << "\n\n\tDeseja excluir mais algum? ";
+                cin >> continuar;
+                system("cls");
+        }
+            break;
+        case 10:
+            while(continuar > 0){
+                cout << "\n\tQual guia desseja excluir? ";
+                cin >> codigo;
+                excluirGuias(indiceGuias, vetGuias, contGuias, codigo);
+                cout << "\n\n\tDeseja excluir mais algum? ";
+                cin >> continuar;
+
+        }
+            break;
+        default:
+            cout << "parcero voce e bobo";
         }
 
        cout << "\n\tDeseja continuar no programa?(1/0): ";
        cin >> menu;
+       system("cls");
     }
     return 0;
 }
