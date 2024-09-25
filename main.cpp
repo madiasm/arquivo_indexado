@@ -148,6 +148,7 @@ void incluirGuias(int tamanho, struct guias vetGuias[], int &cont, struct indice
         cin >> saida;
         cont++;
         }
+        organizaIndice(indiceGuias, tamanho);
     }
 
 
@@ -184,8 +185,8 @@ void incluirGuias(int tamanho, struct guias vetGuias[], int &cont, struct indice
             cin >> vetClientes[i].codigo;
             }
         }
-        indiceClientes[cont].codigo = vetClientes[i].codigo;
-        indiceClientes[cont].ender = i;
+        indiceClientes[contClientes].codigo = vetClientes[i].codigo;
+        indiceClientes[contClientes].ender = i;
         cout << "\tNome: ";
         cin >> vetClientes[i].nome;
         cout << "\tEndereco: ";
@@ -204,6 +205,7 @@ void incluirGuias(int tamanho, struct guias vetGuias[], int &cont, struct indice
         cin >> saida;
         contClientes++;
     }
+    organizaIndice(indiceClientes, tamanho);
 }
 
 
@@ -260,6 +262,37 @@ void excluirGuias (struct indices indice[], struct guias vetGuias[], int &cont, 
 
 
 
+string buscaCidadeVenda(struct indices indice[], int cont, int busca, struct cidades vetCidades[], struct clientes vetClientes[]){
+    int i = 0, f = cont, m = (i+f)/2;
+    for(int saida = 1; saida != 0 && f >= i; m = (i+f)/2){
+        if(indice[m].codigo > busca){
+            f = m - 1;
+        }else{
+            i = m + 1;
+        }
+    }
+    if(indice[m].codigo == busca){
+            return vetCidades[i].nome;
+        }else return "bug";
+}
+
+
+bool incluirVendasBuscaCodigo(struct indices indice[], int cont, int busca, struct cidades vetCidades[], struct clientes vetClientes[]){
+    int i = 0, f = cont, m = (i+f)/2;
+    for(int saida = 1; saida != 0 && f >= i; m = (i+f)/2){
+        if(indice[m].codigo > busca){
+            f = m - 1;
+        }else{
+            i = m + 1;
+        }
+    }
+    if(indice[m].codigo == busca){
+            cout << "Nome: " << vetClientes[indice[m].codigo].nome << " - " << buscaCidadeVenda(indice, cont, vetClientes[indice[m].codigo].codigo,
+                                                                                                 vetCidades, vetClientes) << endl;
+            return true;
+        }else return false;
+}
+
 
 
 void incluirVendas() {
@@ -272,6 +305,7 @@ void incluirVendas() {
         indiceVendas[cont].ender = i;
         cout << "\tCodigo de Cliente: ";
         cin >> vetVendas[i].codigoCliente;
+
         cout << "\tCodigo de Pacote: ";
         cin >> vetVendas[i].codigoPacote;
         cout << "\tQuantia de pessoas: ";
