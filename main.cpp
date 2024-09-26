@@ -13,6 +13,12 @@ struct indices{
     int ender;
 };
 
+struct indicesVendas{
+    int codigo;
+    int codigoCliente;
+    int ender;
+};
+
 struct cidades{
     int codigo;
     string nome;
@@ -262,7 +268,7 @@ void excluirGuias (struct indices indice[], struct guias vetGuias[], int &cont, 
 
 
 
-string buscaCidadeVenda(struct indices indice[], int cont, int busca, struct cidades vetCidades[], struct clientes vetClientes[]){
+string buscaCidadeVenda(struct indices indice[], int cont, int busca, struct cidades vetCidades[]){
     int i = 0, f = cont, m = (i+f)/2;
     for(int saida = 1; saida != 0 && f >= i; m = (i+f)/2){
         if(indice[m].codigo > busca){
@@ -277,35 +283,37 @@ string buscaCidadeVenda(struct indices indice[], int cont, int busca, struct cid
 }
 
 
-bool incluirVendasBuscaCodigo(struct indices indice[], int cont, int busca, struct cidades vetCidades[], struct clientes vetClientes[]){
-    int i = 0, f = cont, m = (i+f)/2;
+bool incluirVendasBuscaCodigo(struct indices indiceClientes[], int contCliente, int busca, struct cidades vetCidades[], struct clientes vetClientes[],
+                              struct indices indiceCidades[], int contCidade){
+    int i = 0, f = contCliente, m = (i+f)/2;
     for(int saida = 1; saida != 0 && f >= i; m = (i+f)/2){
-        if(indice[m].codigo > busca){
+        if(indiceClientes[m].codigo > busca){
             f = m - 1;
         }else{
             i = m + 1;
         }
     }
-    if(indice[m].codigo == busca){
-            cout << "Nome: " << vetClientes[indice[m].codigo].nome << " - " << buscaCidadeVenda(indice, cont, vetClientes[indice[m].codigo].codigo,
-                                                                                                 vetCidades, vetClientes) << endl;
+    if(indiceClientes[m].codigo == busca){
+            cout << "\tNome: " << vetClientes[indiceClientes[m].ender].nome << " - " << buscaCidadeVenda(indiceCidades, contCidade,
+                                vetClientes[indiceClientes[m].ender].codigo, vetCidades) << endl;
             return true;
         }else return false;
 }
 
 
 
-void incluirVendas() {
+void incluirVendas(int tamanho, int &contVendas, struct vendas vetVendas[], struct indicesVendas indiceVendas[], struct cidades vetCidades[],
+                   struct clientes vetClientes[], struct indices indiceClientes[], int contClientes, int contCidade) {
     cout << "\n\t\tFuncao para incluir novas vendas" << endl;
 
     for (int saida = 1, i = contVendas; saida != 0 && i < tamanho; i++) {
         cout << "\n\tCodigo da venda: ";
         cin >> vetVendas[i].codigo;
-        indiceVendas[cont].codigo = vetVendas[i].codigo;
-        indiceVendas[cont].ender = i;
+        indiceVendas[contVendas].codigo = vetVendas[i].codigo;
+        indiceVendas[contVendas].ender = i;
         cout << "\tCodigo de Cliente: ";
         cin >> vetVendas[i].codigoCliente;
-
+        incluirVendasBuscaCodigo(indiceClientes, contClientes, vetVendas[i].codigoCliente, vetCidades, vetClientes, indiceClientes, contCidade);
         cout << "\tCodigo de Pacote: ";
         cin >> vetVendas[i].codigoPacote;
         cout << "\tQuantia de pessoas: ";
@@ -314,7 +322,7 @@ void incluirVendas() {
         cin >> vetVendas[i].valorTotal;
         cout << "\tDeseja continuar inserindo?(1/0): ";
         cin >> saida;
-        contClientes++;
+        contVendas++;
     }
 }
 
@@ -414,12 +422,26 @@ void imprimirClientes(int tamanho, int cont, struct indices indice[], struct cli
 
     for(int i=0; i < cont ; i++){
         if(vetClientes[indice[i].ender].status != 1){
-            cout << "\n\tGuias " << i << endl;
+            cout << "\n\tClientes " << i << endl;
             cout << "\tCodigo: " << vetClientes[indice[i].ender].codigo << endl;
             cout << "\tNome: " << vetClientes[indice[i].ender].nome << endl;
             cout << "\tEndereco: " << vetClientes[indice[i].ender].endereco << endl;
             cout << "\tCodigo da Cidade: " << vetClientes[indice[i].ender].codigoCidade << endl;
         }
+    }
+}
+
+
+void imprimirVendas(int tamanho, int cont, struct indicesVendas indice[], struct vendas vetVendas[]){
+    cout << "\n\t\tFuncao para impressao da lista de Guias" << endl;
+
+    for(int i=0; i < cont ; i++){
+            cout << "\n\tVenda " << i << endl;
+            cout << "\tCodigo: " << vetVendas[indice[i].ender].codigo << endl;
+            cout << "\tCodigo de Cliente: " << vetVendas[indice[i].ender].codigoCliente << endl;
+            cout << "\tCodigo de Pacote: " << vetVendas[indice[i].ender].codigoPacote << endl;
+            cout << "\tQuantia de pessoas: " << vetVendas[indice[i].ender].quantidadePessoas << endl;
+            cout << "\tValor Total: " << vetVendas[indice[i].ender].valorTotal << endl;
     }
 }
 
@@ -437,7 +459,7 @@ int main()
     struct cidades vetCidades[tamanho] = { {1, "Assis", "SP", 1}, {2, "Buenos aires", "AA", 2}, {3, "sao paulo", "SP", 1}, {4, "maracai", "SA", 3}, {5, "candido mota", "DA", 2} };
     struct guias vetGuias[tamanho] = { {1, "jorge", "rua tal", "123123", 2}, {2, "cleide", "rua tal", "123123", 2}, {3, "ze", "rua tal", "123123", 2} };
     struct clientes vetClientes[tamanho] = { {1, "jorge", "rua tal", 2}, {2, "cleide", "rua tal", 2}, {3, "ze", "rua tal", 2} };
-
+    struct vendas vetVendas[tamanho] = { {1, 1, 1, 10, 25.2}, {2, 2, 2, 15, 12}, {3, 3, 3, 5, 4} };
 
     //inicialização dos indices
 
@@ -446,10 +468,12 @@ int main()
     struct indices indiceGuias[tamanho] = { {1, 0}, {2, 1}, {3, 2} };
     struct indices indiceClientes[tamanho] = { {1, 0}, {2, 1}, {3, 2} };
 
+    struct indicesVendas indiceVendas[tamanho] = { {1, 1, 0}, {2, 2, 1}, {3, 3, 2} };
+
 
     //inicialização dos contadores
 
-    int contPaises = 3, contCidades = 5, contGuias = 3, contClientes = 3;
+    int contPaises = 3, contCidades = 5, contGuias = 3, contClientes = 3, contVendas = 3, contPacotes = 3;
 
 
     int menu = 1;
@@ -469,6 +493,8 @@ int main()
         cout << "\t[08] Imprimir Clientes" << endl;
         cout << "\t[09] Excluir Clientes" << endl;
         cout << "\t[10] Excluir Guias" << endl;
+        cout << "\t[11] Incluir Vendas" << endl;
+        cout << "\t[12] Imprimir Vendas" << endl;
 
         cout << "\n";
         cin >> decisao;
@@ -518,6 +544,12 @@ int main()
                 cin >> continuar;
 
         }
+            break;
+        case 11:
+            incluirVendas(tamanho, contVendas, vetVendas, indiceVendas, vetCidades, vetClientes, indiceClientes, contClientes, contCidades);
+            break;
+        case 12:
+            imprimirVendas(tamanho, contVendas, indiceVendas, vetVendas);
             break;
         default:
             cout << "parcero voce e bobo";
