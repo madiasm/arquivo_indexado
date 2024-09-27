@@ -19,6 +19,12 @@ struct indicesVendas{
     int ender;
 };
 
+struct indicesPacotes{
+    int codigo;
+    int codigoPacote;
+    int codigoGuia;
+}
+
 struct cidades{
     int codigo;
     string nome;
@@ -316,6 +322,7 @@ void incluirVendas(int tamanho, int &contVendas, struct vendas vetVendas[], stru
         incluirVendasBuscaCodigo(indiceClientes, contClientes, vetVendas[i].codigoCliente, vetCidades, vetClientes, indiceClientes, contCidade);
         cout << "\tCodigo de Pacote: ";
         cin >> vetVendas[i].codigoPacote;
+        incluirVendasBuscaPacote();
         cout << "\tQuantia de pessoas: ";
         cin >> vetVendas[i].quantidadePessoas;
         cout << "\tValor Total: ";
@@ -325,6 +332,65 @@ void incluirVendas(int tamanho, int &contVendas, struct vendas vetVendas[], stru
         contVendas++;
     }
 }
+
+
+
+
+
+
+
+
+
+bool incluirPacotesBuscaCodigo(struct indices indiceClientes[], int contCliente, int busca, struct cidades vetCidades[], struct clientes vetClientes[],
+                              struct indices indiceCidades[], int contCidade){
+    int i = 0, f = contCliente, m = (i+f)/2;
+    for(int saida = 1; saida != 0 && f >= i; m = (i+f)/2){
+        if(indiceClientes[m].codigo > busca){
+            f = m - 1;
+        }else{
+            i = m + 1;
+        }
+    }
+    if(indiceClientes[m].codigo == busca){
+            cout << "\tNome: " << vetClientes[indiceClientes[m].ender].nome << " - " << buscaCidadeVenda(indiceCidades, contCidade,
+                                vetClientes[indiceClientes[m].ender].codigo, vetCidades) << endl;
+            return true;
+        }else return false;
+}
+
+
+
+void incluirPacotes(struct pacotes vetPacote[], struct indicesPacotes indicePacote[], int &contPacotes){
+    cout << "\n\t\tFuncao para incluir novos pacotes" << endl;
+
+    for (int saida = 1, i = contPacotes; saida != 0 && i < tamanho; i++) {
+        cout << "\n\tCodigo do Pacote: ";
+        cin >> vetPacote[i].codigo;
+        indiceVendas[contPacotes].codigo = vetPacote[i].codigo;
+        indiceVendas[contPacotes].ender = i;
+        cout << "\tDescricao: ";
+        cin >> vetPacote[i].descricao;
+        cout << "\tCodigo de Guia: ";
+        cin >> vetPacote[i].codigoGuia;
+        cout << "\tValor por pessoa: ";
+        cin >> vetPacote[i].valorPessoa;
+        cout << "\tTotal de participantes: ";
+        cin >> vetPacote[i].totalParticipantes;
+        cout << "\tQuantia maxima de participantes: ";
+        cin >> vetPacote[i].quantMaxPartipantes;
+        cout << "\tDeseja continuar inserindo?(1/0): ";
+        cin >> saida;
+        contPacotes++;
+    }
+}
+
+
+
+
+
+
+
+
 
 
 
