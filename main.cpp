@@ -227,16 +227,16 @@ void incluirGuias(int tamanho, struct guias vetGuias[], int &cont, struct indice
 
 
 
-bool excluirBuscarGuia(int contVendas, struct indicesVendas indiceVendas[], int busca, struct vendas vetVendas[]){
-    int i = 0, f = contVendas, m = (i+f)/2;
+bool excluirBuscarGuia(int contPacotes, struct indicesPacotes indicePacotes[], int busca, struct pacotes vetPacotes[]){
+    int i = 0, f = contPacotes, m = (i+f)/2;
     for(int saida = 1; saida != 0 && f >= i; m = (i+f)/2){
-        if(indiceVendas[m].codigoCliente > busca){
+        if(indicePacotes[m].codigoGuia > busca){
             f = m - 1;
         }else{
             i = m + 1;
         }
     }
-    if(vetVendas[indiceVendas[m].enderVenda].codigoCliente == busca){
+    if(vetPacotes[indicePacotes[m].enderGuia].codigoGuia == busca){
             return true;
         }else return false;
 }
@@ -272,17 +272,17 @@ void excluirClientes (struct indices indice[], struct clientes vetClientes[], in
             f = m - 1;
     }
     i = indice[m].ender;
-    if(excluirBuscarGuia(contVendas, indiceVendas, vetClientes[m].codigo, vetVendas) == true){
-    if ((cod == indice[m].codigo) && vetClientes[i].status == 0){
+    if(excluirBuscarCliente(contVendas, indiceVendas, vetClientes[m].codigo, vetVendas) == false){
+    if (vetClientes[i].status == 0){
         vetClientes[i].status = 1;
-        cout << "\tCliente excluido com sucesso";
+        cout << "\tCliente excluido com sucesso !!";
         }else cout << "\tCliente nao cadastrado";
-    }else cout << "\tGuia possui compras no nome";
+    }
 }
 
 
-void excluirGuias (struct indices indiceGuias[], struct guias vetGuias[], int &cont, int cod, int contVendas, struct indicesVendas indiceVendas[],
-                   struct vendas vetVendas[]){
+void excluirGuias (struct indices indiceGuias[], struct guias vetGuias[], int &cont, int cod, int contPacotes, struct indicesPacotes indicePacotes[],
+                   struct pacotes vetPacotes[]){
     int i = 0, f = cont;
     int m = (i + f) / 2;
     for (; f >= i && cod != indiceGuias[m].codigo; m = (i + f) / 2){
@@ -291,14 +291,14 @@ void excluirGuias (struct indices indiceGuias[], struct guias vetGuias[], int &c
         else
             f = m - 1;
     }
+
     i = indiceGuias[m].ender;
-    if(excluirBuscarGuia(contVendas, indiceVendas, vetGuias[m].codigo, vetVendas) == true){
-        if ((cod == indiceGuias[m].codigo) && vetGuias[i].status == 0){
+    if(excluirBuscarGuia(contPacotes, indicePacotes, vetGuias[m].codigo, vetPacotes) == false){
+        if (vetGuias[i].status == 0){
             vetGuias[i].status = 1;
             cout << "\tGuia excluido com sucesso!!";
-        }
-    else cout << "\tGuia nao cadastrado";
-    }else cout << "\tGuia possui compras no nome";
+        }else cout << "\tGuia nao cadastrado";
+    }
 }
 
 
@@ -714,7 +714,7 @@ int main()
 
     struct paises vetPaises[tamanho] = { {1, "Brasil"}, {2, "Argentina"}, {3, "Chile"}};
     struct cidades vetCidades[tamanho] = { {1, "Assis", "SP", 1}, {2, "Buenos aires", "AA", 2}, {3, "sao paulo", "SP", 1}, {4, "maracai", "SA", 3}, {5, "candido mota", "DA", 2} };
-    struct guias vetGuias[tamanho] = { {1, "jorge", "rua tal", "123123", 2}, {2, "cleide", "rua tal", "123123", 2}, {3, "ze", "rua tal", "123123", 2} };
+    struct guias vetGuias[tamanho] = { {1, "jorge", "rua tal", "123123", 2, 0}, {2, "cleide", "rua tal", "123123", 2, 0}, {3, "ze", "rua tal", "123123", 2, 0} };
     struct clientes vetClientes[tamanho] = { {1, "jorge", "rua tal", 2}, {2, "cleide", "rua tal", 2}, {3, "ze", "rua tal", 2} };
     struct vendas vetVendas[tamanho] = { {1, 1, 1, 10, 25.2}, {2, 2, 2, 15, 12}, {3, 3, 3, 5, 4} };
     struct pacotes vetPacotes[tamanho] = { {1, "a", 1, 5, 5, 10}, {2, "b", 2, 5, 5, 10}, {3, "c", 3, 5, 5, 10}};
@@ -805,7 +805,7 @@ int main()
             while(continuar > 0){
                 cout << "\n\tQual guia desseja excluir? ";
                 cin >> codigo;
-                excluirGuias(indiceGuias, vetGuias, contGuias, codigo, contVendas, indiceVendas, vetVendas);
+                excluirGuias(indiceGuias, vetGuias, contGuias, codigo, contPacotes, indicePacotes, vetPacotes);
                 cout << "\n\n\tDeseja excluir mais algum? ";
                 cin >> continuar;
 
