@@ -236,7 +236,7 @@ bool excluirBuscarGuia(int contPacotes, struct indicesPacotes indicePacotes[], i
             i = m + 1;
         }
     }
-    if(vetPacotes[indicePacotes[m].enderGuia].codigoGuia == busca){
+    if(indicePacotes[m].codigoGuia == busca){
             return true;
         }else return false;
 }
@@ -573,8 +573,9 @@ void reorganizacao (int tamanho, struct indices indiceCliente[], struct clientes
 
 //funções ler
 
-void lerPaises(int tamanho, int cont, struct paises vetPaises[], struct indices indice[]){
+void lerPaises(int tamanho, int &cont, struct paises vetPaises[], struct indices indice[]){
     cout << "\n\t\tFuncao para leitura de paises" << endl;
+    cont = 0;
     for(int i = 0, saida = 1; i < tamanho && saida != 0; i++, cont++){
         cout << "\n\tPais " << i << endl;
         cout << "\n\tCodigo: ";
@@ -597,9 +598,10 @@ void lerPaises(int tamanho, int cont, struct paises vetPaises[], struct indices 
 
 void lerCidades(int tamanho, int &cont,struct cidades vetCidade[], struct indices indice[]){
     cout << "\n\t\tFuncao para leitura de Cidades" << endl;
+    cont = 0;
     for(int i = 0, saida = 1; i < tamanho && saida != 0; i++, cont++){
         cout << "\n\tCidade " << i << endl;
-        cout << "Codigo: ";
+        cout << "\tCodigo: ";
         cin >> vetCidade[i].codigo;
         while(vetCidade[i].codigo <= 0){
             cout << "\n\tDigite um codigo valido: ";
